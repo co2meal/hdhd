@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import logo from './logo.svg';
 import './App.css';
+import { Button } from 'semantic-ui-react';
 
 class App extends Component {
   render() {
@@ -11,7 +12,9 @@ class App extends Component {
           <h1 className="App-title">Welcome to Reaicxx</h1>
         </header>
         <p className="App-intro">
-          To get started, edit <code>src/App.jss</code> and se to relodi.
+          <Button primary={true}>
+            To get started, edit <code>src/App.jss</code> and se to relodi.
+          </Button>
         </p>
       </div>
     );
