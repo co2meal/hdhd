@@ -1,13 +1,17 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
+import { BrowserRouter } from 'react-router-dom'
 import {AppContainer} from 'react-hot-loader';
-import './index.css';
-import App from './App';
 import registerServiceWorker from './registerServiceWorker';
+
+import App from './App';
+import './index.css';
 
 ReactDOM.render(
   <AppContainer>
-    <App />
+    <BrowserRouter>
+      <App />
+    </BrowserRouter>
   </AppContainer>,
   document.getElementById('root')
 );
@@ -19,7 +23,9 @@ if (module.hot) {
     const NextApp = require('./App').default;
     ReactDOM.render(
       <AppContainer>
-        <NextApp />
+        <BrowserRouter>
+          <NextApp />
+        </BrowserRouter>
       </AppContainer>,
       document.getElementById('root')
     );
