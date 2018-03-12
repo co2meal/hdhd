@@ -1,13 +1,19 @@
 import React from 'react';
+
 import * as RouterDOM from 'react-router-dom';
 import * as UI from 'semantic-ui-react';
-import authService from 'services/authentication/authService.js'
-import './Login.css'
 
-class Login extends React.Component {
+import AuthService from 'services/AuthService.js'
+
+import './AuthForm.css'
+class Signup extends React.Component {
   state = {
     email: '',
     password: '',
+    passwordConrimation: '',
+    username: '',
+
+    errorMessages: [],
   }
 
   constructor(props) {
@@ -19,7 +25,7 @@ class Login extends React.Component {
 
   handleSubmit(e) {
     e.preventDefault();
-    authService.login(this.state, (success) => this.setState({redirectToReferrer: success}))
+    AuthService.signup(this.state, (err) => this.setState({}))
   }
 
   getHandleChange(field) {
@@ -31,34 +37,49 @@ class Login extends React.Component {
 
   render() {
     return (
-      <div className="ui middle aligned center aligned grid">
-        <div className="column">
+      <UI.Grid textAlign="center" verticalAlign="middle">
+        <UI.GridColumn>
           <UI.Header as='h2' icon>
             <UI.Icon name='user' />
             <UI.Header.Subheader>
               Signup
             </UI.Header.Subheader>
           </UI.Header>
-          <UI.Form size="large" onSubmit={this.handleSubmit} autoComplete="new-password">
+          <UI.Form size="large" onSubmit={this.handleSubmit}>
             <UI.Segment>
               <UI.Form.Input
+                label="E-Mail"
                 onChange={this.getHandleChange('email')} placeholder="E-mail address" type="email"
                 iconPosition="left" icon="user" />
+              <UI.Form.Group widths='equal'>
+                <UI.Form.Input
+                  label="Password"
+                  onChange={this.getHandleChange('password')} placeholder="Password" type="password"
+                  iconPosition="left" icon="lock" />
+                <UI.Form.Input
+                  label="Password Confirmation"
+                  onChange={this.getHandleChange('passwordConrimation')} placeholder="Password Confirmation" type="password"
+                  iconPosition="left" icon="lock" />
+              </UI.Form.Group>
+            </UI.Segment>
+            <UI.Segment>
               <UI.Form.Input
-                onChange={this.getHandleChange('password')} placeholder="password" type="password"
-                iconPosition="left" icon="lock" autoComplete="new-password" />
-              <UI.Form.Button color="teal" size="large" fluid> Login </UI.Form.Button>
+                  label="Username"
+                  onChange={this.getHandleChange('username')} placeholder="Username" type="text"
+                  iconPosition="left" icon="user" />
+              <UI.Form.Button color="teal" size="large" fluid> Register </UI.Form.Button>
             </UI.Segment>
             <UI.Message error />
           </UI.Form>
           <UI.Message>
-              New to us? <RouterDOM.Link to="/signup"> Sign Up </RouterDOM.Link>
+              Do you have an account already? <br />
+              <RouterDOM.Link to="/login"> Go to Login </RouterDOM.Link>
+              or <RouterDOM.Link to="/password"> Find your password </RouterDOM.Link>
           </UI.Message>
-        </div>
-      </div>
-    );
+        </UI.GridColumn>
+      </UI.Grid>
+    )
   }
 }
 
-export default Login;
-// export default autofill(Login);
+export default Signup;

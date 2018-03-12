@@ -1,16 +1,26 @@
-import React from 'react';
-import _ from 'lodash';
-import * as RouterDOM from 'react-router-dom';
-import * as UI from 'semantic-ui-react';
-import authService from 'services/authentication/authService.js'
-import './Login.css'
+import React from 'react'
+import * as Redux from 'react-redux'
+import * as RouterDOM from 'react-router-dom'
+import * as UI from 'semantic-ui-react'
+
+import AuthActions from 'actions/AuthActions'
+
+import './AuthForm.css'
+
+function mapStateToProps(state, ownProps) {
+  return {
+    isLoading: state.isLoading,
+    redirectToReferrer: !!state.me,
+    errorMessages: state.errorMessages,
+  }
+}
 
 class Login extends React.Component {
   state = {
-    redirectToReferrer: false,
-    email: '',
-    password: '',
-    errorMessages: [],
+    form: {
+      email: '',
+      password: '',
+    },
   }
 
   constructor(props) {
@@ -21,38 +31,34 @@ class Login extends React.Component {
   }
 
   handleSubmit(e) {
-    e.preventDefault();
-    authService.login(this.state, (err, data) => {
-      if (err) {
-        this.setState({
-          errorMessages: [...this.state.errorMessages, ...data.messages],
-        })
-      } else {
-        this.setState({
-          redirectToReferrer: !err,
-        })
-      }
-    })
+    e.preventDefault()
+    this.props.dispatch(AuthActions.createSignIn(this.state.form))
   }
 
   getHandleChange(field) {
-    return ((e) => {
+    return (e) => {
       e.preventDefault()
-      this.setState({[field]: e.target.value})
-    })
+      this.setState({
+        ...this.state,
+        form: {
+          ...this.state.form,
+          [field]: e.target.value,
+        }
+      })
+    }
   }
 
   render() {
-    const { from } = this.props.location.state || { from: { pathname: "/" } };
-    const { redirectToReferrer } = this.state;
+    const { from } = this.props.location.state || { from: { pathname: "/" } }
+    const { redirectToReferrer, isLoading, errorMessages } = this.props
 
     if (redirectToReferrer) {
-      return <RouterDOM.Redirect to={from} />;
+      return <RouterDOM.Redirect to={from} />
     }
 
     return (
-      <div className="ui middle aligned center aligned grid">
-        <div className="column">
+      <UI.Grid textAlign="center" verticalAlign="middle">
+        <UI.GridColumn>
           <UI.Header as='h2' icon>
             <UI.Icon name='user' />
             <UI.Header.Subheader>
@@ -61,7 +67,9 @@ class Login extends React.Component {
           </UI.Header>
           <UI.Form
             size="large"autoComplete="new-password"
-            onSubmit={this.handleSubmit} error={!_.isEmpty(this.state.errorMessages)}>
+            loading={isLoading}
+            onSubmit={this.handleSubmit}
+            error={!!errorMessages}>
             <UI.Segment>
               <UI.Form.Input
                 onChange={this.getHandleChange('email')} placeholder="E-mail address" type="email"
@@ -73,17 +81,18 @@ class Login extends React.Component {
             </UI.Segment>
             <UI.Message
               error
-              list={this.state.errorMessages}
+              list={errorMessages}
             />
           </UI.Form>
           <UI.Message>
               New to us? <RouterDOM.Link to="/signup"> Sign Up </RouterDOM.Link>
           </UI.Message>
-        </div>
-      </div>
+        </UI.GridColumn>
+      </UI.Grid>
     )
   }
 }
 
-export default Login;
-// export default autofill(Login);
+Login = Redux.connect(mapStateToProps)(Login)
+
+export default Login

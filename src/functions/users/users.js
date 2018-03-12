@@ -15,13 +15,15 @@ const cors = require('cors')({
 const datastore = Datastore();
 
 exports.get = (req, res) => cors(req, res, () => {
-  const key = datastore.key(['users', req.body.key])
+  const key = datastore.key(['users', req.body.email])
 
   datastore.get(key)
     .then(([entity]) => {
       if (!entity) {
         throw new Error(`No entity found for key ${key.path.join('/')}.`);
       }
+
+      // TODO: Password Check
 
       res.status(200).send(entity);
     })
@@ -32,10 +34,14 @@ exports.get = (req, res) => cors(req, res, () => {
 })
 
 exports.set = (req, res) => cors(req, res, () => {
-  const key = datastore.key(['users', req.body.key])
-  const user = Object.assign({}, req.body, {
-    key,
-  })
+  const key = datastore.key(['users', req.body.email])
+  const user = {
+    key: key,
+    data: req.body,
+  }
+
+  // TODO: Server side Validation Check
+
   datastore.save(user)
     .then(() => res.status(200).send(`Entity ${key.path.join('/')} saved.`))
     .catch((err) => {
