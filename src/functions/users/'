@@ -1,0 +1,10 @@
+var express = require('express');
+var app = express();
+
+var users = require('./users_v2.js').get;
+
+app.post('/users', users);
+
+app.listen(3000, function() {
+    console.log('Listening...');
+});

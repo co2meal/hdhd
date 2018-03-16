@@ -1,6 +1,9 @@
-const Datastore = require('@google-cloud/datastore');
-var whitelist = ['http://localhost:3000', 'http://example2.com']
+const MongoClient = require('mongodb').MongoClient
+const config = require('dotenv').config
 
+config()
+const connectMongoDB = () => MongoClient.connect(process.env.MONGODB).then(client=>client.db())
+var whitelist = ['http://localhost:3000', 'http://example2.com']
 const cors = require('cors')({
   credentials: true,
   origin: function (origin, callback) {
@@ -10,42 +13,37 @@ const cors = require('cors')({
       callback(new Error('Not allowed by CORS'))
     }
   }
-});
+})
 
-const datastore = Datastore();
-
-exports.get = (req, res) => cors(req, res, () => {
-  const key = datastore.key(['users', req.body.email])
-
-  datastore.get(key)
-    .then(([entity]) => {
-      if (!entity) {
-        throw new Error(`No entity found for key ${key.path.join('/')}.`);
-      }
-
-      // TODO: Password Check
-
-      res.status(200).send(entity);
+exports.signIn = (req, res) => cors(req, res, () => {
+  connectMongoDB().then(db => {
+    const query = {
+      email: req.body.email
+    }
+    db.collection('users').findOne(query).then((user) => {
+      if (!user) throw new Error("user not found")
+      return user
+    }).then((user) => {
+      return res.status(200).send(user)
+    }).catch((message) => {
+      return res.status(500).send({messages: [message]})
     })
-    .catch((err) => {
-      res.status(500).send({messages: [err.message]});
-      return Promise.reject(err);
   })
 })
 
-exports.set = (req, res) => cors(req, res, () => {
-  const key = datastore.key(['users', req.body.email])
-  const user = {
-    key: key,
-    data: req.body,
-  }
-
-  // TODO: Server side Validation Check
-
-  datastore.save(user)
-    .then(() => res.status(200).send(`Entity ${key.path.join('/')} saved.`))
-    .catch((err) => {
-      res.status(500).send({messages: [err.message]});
-      return Promise.reject(err);
+exports.signUp = (req, res) => cors(req, res, () => {
+  connectMongoDB().then(db => {
+    const query = {
+      email: req.body.email
+    }
+    db.collection('users').findOne(query).then((user) => {
+      if (user) throw new Error("user already exist")
+      return db.collection('users').insert(req.body)
+    }).then(user => {
+      return res.status(200).send(user)
+    }).catch(message => {
+      console.log(message)
+      return res.status(500).send({messages: [message]})
+    })
   })
 })
