@@ -7,7 +7,7 @@ import AuthActions from 'actions/AuthActions'
 
 import './AuthForm.css'
 
-function mapStateToProps(state, ownProps) {
+function mapStateToProps(state) {
   return {
     isLoading: state.isLoading,
     redirectToReferrer: !!state.me,
@@ -66,7 +66,7 @@ class Login extends React.Component {
             </UI.Header.Subheader>
           </UI.Header>
           <UI.Form
-            size="large"autoComplete="new-password"
+            size="large" autoComplete="new-password"
             loading={isLoading}
             onSubmit={this.handleSubmit}
             error={!!errorMessages}>

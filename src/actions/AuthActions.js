@@ -1,13 +1,12 @@
 import AT from 'constants/ActionTypes'
 import AuthService from 'services/AuthService'
 
-function createSignIn ({email, password}) {
+function createSignIn(payload) {
   return (dispatch) => {
     dispatch(createSetIsLoading(true))
-    AuthService.signIn({email, password}).then((res) => {
+    AuthService.signIn(payload).then((res) => {
       return Promise.all([res.status !== 200, res.json()])
     }).then(([err, json]) => {
-      dispatch(createSetIsLoading(false))
       if (err)
         return Promise.reject(json.messages)
       return json
@@ -15,6 +14,27 @@ function createSignIn ({email, password}) {
       dispatch(createSignInSuccess(payload))
     }).catch((messages) => {
       dispatch(createSignInFailure(messages))
+    }).finally(() => {
+      dispatch(createSetIsLoading(false))
+    })
+  }
+}
+
+function createSignUp(payload) {
+  return (dispatch) => {
+    dispatch(createSetIsLoading(true))
+    AuthService.signUp(payload).then((res) => {
+      return Promise.all([res.status !== 200, res.json()])
+    }).then(([err, json]) => {
+      if (err)
+        return Promise.reject(json.messages)
+      return json
+    }).then((payload) => {
+      dispatch(createSignUpSuccess(payload))
+    }).catch((messages) => {
+      dispatch(createSignUpFailure(messages))
+    }).finally(() => {
+      dispatch(createSetIsLoading(false))
     })
   }
 }
@@ -33,6 +53,20 @@ function createSignInFailure(messages) {
   }
 }
 
+function createSignUpSuccess(user) {
+  return {
+    type: AT.SIGN_UP_SUCCESS,
+    user
+  }
+}
+
+function createSignUpFailure(messages) {
+  return {
+    type: AT.SIGN_UP_FAILURE,
+    messages
+  }
+}
+
 function createSetIsLoading(isLoading) {
   return {
     type: AT.SET_LOADING,
@@ -42,4 +76,5 @@ function createSetIsLoading(isLoading) {
 
 export default {
   createSignIn,
+  createSignUp,
 }

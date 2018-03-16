@@ -3,7 +3,7 @@ import AT from 'constants/ActionTypes'
 const initialState = {
   me: null,
   isLoading: false,
-  errorMessages: [],
+  errorMessages: null,
 }
 
 export default function (state = initialState, action) {
