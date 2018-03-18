@@ -4,29 +4,33 @@ import Thunk from 'redux-thunk';
 
 import * as Redux from 'redux'
 import * as ReactRedux from 'react-redux'
-import * as RouterDOM from 'react-router-dom';
 import * as HotLoader from 'react-hot-loader'
+import * as RouterRedux from 'react-router-redux'
+import createHistory from 'history/createBrowserHistory'
 
 import registerServiceWorker from './registerServiceWorker'
 import reducer from './reducer'
+
 import App from './App';
 
 import './index.css';
+const history = createHistory()
 
 const composeEnhancers = window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__ || Redux.compose
 let store = Redux.createStore(
   reducer,
-  composeEnhancers(Redux.applyMiddleware(
-    Thunk,
-  )),
+  composeEnhancers(
+    Redux.applyMiddleware(Thunk),
+    Redux.applyMiddleware(RouterRedux.routerMiddleware(history))
+  ),
 )
 
 ReactDOM.render(
   <ReactRedux.Provider store={store}>
     <HotLoader.AppContainer>
-      <RouterDOM.BrowserRouter>
+      <RouterRedux.ConnectedRouter history={history}>
         <App />
-      </RouterDOM.BrowserRouter>
+      </RouterRedux.ConnectedRouter>
     </HotLoader.AppContainer>
   </ReactRedux.Provider>,
   document.getElementById('root')
@@ -40,9 +44,9 @@ if (module.hot) {
     ReactDOM.render(
       <ReactRedux.Provider store={store}>
         <HotLoader.AppContainer>
-          <RouterDOM.BrowserRouter>
+          <RouterRedux.ConnectedRouter history={history}>
             <NextApp />
-          </RouterDOM.BrowserRouter>
+          </RouterRedux.ConnectedRouter>
         </HotLoader.AppContainer>
       </ReactRedux.Provider>,
       document.getElementById('root')

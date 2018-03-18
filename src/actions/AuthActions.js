@@ -1,6 +1,7 @@
+import { push } from 'react-router-redux'
+
 import AT from 'constants/ActionTypes'
 import AuthService from 'services/AuthService'
-
 function createSignIn(payload) {
   return (dispatch) => {
     dispatch(createSetIsLoading(true))
@@ -31,6 +32,7 @@ function createSignUp(payload) {
       return json
     }).then((payload) => {
       dispatch(createSignUpSuccess(payload))
+      dispatch(push('/welcome'))
     }).catch((messages) => {
       dispatch(createSignUpFailure(messages))
     }).finally(() => {

@@ -10,9 +10,8 @@ import './AuthForm.css'
 
 function mapStateToProps(state) {
   return {
-    isLoading: state.isLoading,
-    redirectToReferrer: !!state.me,
-    errorMessages: state.errorMessages,
+    isLoading: state.userReducer.isLoading,
+    errorMessages: state.userReducer.errorMessages,
   }
 }
 

@@ -16,7 +16,6 @@ class AuthService {
   }
 
   static signUp({email, password, passwordConfirmation, username}) {
-    // TODO: Add a validation Logic.
     return fetch(SIGN_UP_URL, {
       method: 'POST',
       headers: {

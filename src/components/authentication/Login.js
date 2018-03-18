@@ -2,6 +2,7 @@ import React from 'react'
 import * as Redux from 'react-redux'
 import * as RouterDOM from 'react-router-dom'
 import * as UI from 'semantic-ui-react'
+import { push } from 'react-router-redux'
 
 import AuthActions from 'actions/AuthActions'
 
@@ -9,9 +10,9 @@ import './AuthForm.css'
 
 function mapStateToProps(state) {
   return {
-    isLoading: state.isLoading,
-    redirectToReferrer: !!state.me,
-    errorMessages: state.errorMessages,
+    isLoading: state.userReducer.isLoading,
+    redirectToReferrer: !!state.userReducer.me,
+    errorMessages: state.userReducer.errorMessages,
   }
 }
 
@@ -53,7 +54,8 @@ class Login extends React.Component {
     const { redirectToReferrer, isLoading, errorMessages } = this.props
 
     if (redirectToReferrer) {
-      return <RouterDOM.Redirect to={from} />
+      this.props.dispatch(push(from))
+      // return <RouterDOM.Redirect to={from} />
     }
 
     return (

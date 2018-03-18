@@ -1,8 +1,10 @@
-// import * as Redux from 'redux'
+import * as Redux from 'redux'
+import { routerReducer } from 'react-router-redux'
 
 import userReducer from 'reducer/userReducer'
-
-export default userReducer
-// export default Redux.combineReducers(
-
-// )
+export default Redux.combineReducers(
+  {
+    userReducer,
+    router: routerReducer,
+  }
+)

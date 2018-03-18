@@ -25,8 +25,8 @@ exports.signIn = (req, res) => cors(req, res, () => {
       return user
     }).then((user) => {
       return res.status(200).send(user)
-    }).catch((message) => {
-      return res.status(500).send({messages: [message]})
+    }).catch((e) => {
+      return res.status(500).send({messages: [e.message]})
     })
   })
 })
@@ -41,9 +41,9 @@ exports.signUp = (req, res) => cors(req, res, () => {
       return db.collection('users').insert(req.body)
     }).then(user => {
       return res.status(200).send(user)
-    }).catch(message => {
-      console.log(message)
-      return res.status(500).send({messages: [message]})
+    }).catch(e => {
+      console.log(e)
+      return res.status(500).send({messages: [e.message]})
     })
   })
 })

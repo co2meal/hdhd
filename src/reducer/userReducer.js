@@ -20,6 +20,18 @@ export default function (state = initialState, action) {
         errorMessages: action.messages,
       }
 
+    case AT.SIGN_UP_SUCCESS:
+      return {
+        ...state,
+        errorMessages: action.messages,
+      }
+
+    case AT.SIGN_UP_FAILURE:
+      return {
+        ...state,
+        errorMessages: action.messages,
+      }
+
     case AT.SET_LOADING:
       return {
         ...state,
