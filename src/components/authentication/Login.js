@@ -1,8 +1,8 @@
 import React from 'react'
 import * as Redux from 'react-redux'
 import * as RouterDOM from 'react-router-dom'
+import * as RouterRedux from 'react-router-redux'
 import * as UI from 'semantic-ui-react'
-import { push } from 'react-router-redux'
 
 import AuthActions from 'actions/AuthActions'
 
@@ -10,9 +10,9 @@ import './AuthForm.css'
 
 function mapStateToProps(state) {
   return {
-    isLoading: state.userReducer.isLoading,
-    redirectToReferrer: !!state.userReducer.me,
-    errorMessages: state.userReducer.errorMessages,
+    isLoading: state.user.isLoading,
+    redirectToReferrer: !!state.user.me,
+    errorMessages: state.user.errorMessages,
   }
 }
 
@@ -29,6 +29,13 @@ class Login extends React.Component {
 
     this.handleSubmit = this.handleSubmit.bind(this)
     this.getHandleChange = this.getHandleChange.bind(this)
+  }
+
+  componentWillReceiveProps(nextProps) {
+    if (nextProps.redirectToReferrer) {
+      const { from } = nextProps.location.state || { from: { pathname: "/" } }
+      this.props.dispatch(RouterRedux.push(from))
+    }
   }
 
   handleSubmit(e) {
@@ -50,13 +57,7 @@ class Login extends React.Component {
   }
 
   render() {
-    const { from } = this.props.location.state || { from: { pathname: "/" } }
-    const { redirectToReferrer, isLoading, errorMessages } = this.props
-
-    if (redirectToReferrer) {
-      this.props.dispatch(push(from))
-      // return <RouterDOM.Redirect to={from} />
-    }
+    const { isLoading, errorMessages } = this.props
 
     return (
       <UI.Grid textAlign="center" verticalAlign="middle">

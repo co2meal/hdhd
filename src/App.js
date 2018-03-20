@@ -10,7 +10,7 @@ import './App.css';
 
 function mapStateToProps(state) {
   return {
-    isAuthenticated: !!state.userReducer.me,
+    isAuthenticated: !!state.user.me,
   }
 }
 
@@ -53,4 +53,4 @@ class App extends React.Component {
   }
 }
 
-export default App;
+export default App
