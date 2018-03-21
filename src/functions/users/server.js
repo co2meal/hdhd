@@ -1,13 +1,13 @@
 var express = require('express');
+var backend = require('./backend.js');
+
 var app = express();
-var bodyParser = require('body-parser')
-var methods = require('./users.js');
 
 app.use(express.urlencoded({ extended: true }));
 app.use(express.json())
 
-for (const k of Object.keys(methods)) {
-  app.post('/' + k, methods[k])
+for (const k of Object.keys(backend)) {
+  app.post('/' + k, backend[k])
 }
 
 app.listen(3000, function() {

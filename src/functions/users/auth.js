@@ -1,22 +1,8 @@
-const MongoClient = require('mongodb').MongoClient
-const config = require('dotenv').config
-
-config()
-const connectMongoDB = () => MongoClient.connect(process.env.MONGODB).then(client=>client.db())
-var whitelist = ['http://localhost:3000', 'http://example2.com']
-const cors = require('cors')({
-  credentials: true,
-  origin: function (origin, callback) {
-    if (whitelist.indexOf(origin) !== -1) {
-      callback(null, true)
-    } else {
-      callback(new Error('Not allowed by CORS'))
-    }
-  }
-})
+const DatabaseUtils = require('./DatabaseUtils').DatabaseUtils
+const cors = require('./RequestUtils').cors
 
 exports.signIn = (req, res) => cors(req, res, () => {
-  connectMongoDB().then(db => {
+  DatabaseUtils.connectMongoDB().then(db => {
     const query = {
       email: req.body.email
     }
@@ -32,7 +18,7 @@ exports.signIn = (req, res) => cors(req, res, () => {
 })
 
 exports.signUp = (req, res) => cors(req, res, () => {
-  connectMongoDB().then(db => {
+  DatabaseUtils.connectMongoDB().then(db => {
     const query = {
       email: req.body.email
     }
