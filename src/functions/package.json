@@ -12,6 +12,7 @@
   "dependencies": {
     "cors": "^2.8.4",
     "dotenv": "^5.0.1",
+    "find-hashtags": "^1.0.1",
     "mongodb": "^3.0.4"
   }
 }
