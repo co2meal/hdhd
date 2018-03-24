@@ -1,76 +1,101 @@
 import React from 'react'
+import findHashTags from "find-hashtags"
+import * as Redux from 'react-redux'
 import * as UI from 'semantic-ui-react'
-import { compose, withProps } from "recompose"
-import * as GoogleMaps from "react-google-maps"
-import MarkerWithLabel from "react-google-maps/lib/components/addons/MarkerWithLabel"
-import GeoService from 'services/GeoService'
 
-const API_KEY = "AIzaSyAJVqwaKqdFDaiISh7Q_FUcNOdtTLKV1fk"
+import PostsMapContainer from './PostsMapContainer'
 
-class MyMapComponent extends React.Component {
-  state = {
-    coords: {
-      latitude: -34.397,
-      longitude: 150.644,
-    }
+function mapStateToProps(state) {
+  return {
+    me: state.auth.me,
   }
-  componentDidMount() {
-    GeoService.getCurrentPosition().then((coords) => {
-      console.log(coords)
-      this.setState({
-        coords
-      })
+}
+class Dashboard extends React.Component {
+  defaultKeywords = ["히덕", "희덕"]
+  state = {
+    keywords: this.defaultKeywords,
+    writingText: "",
+    errorMessages: null,
+  }
+
+  constructor() {
+    super()
+    this.handleTextChange = this.handleTextChange.bind(this)
+    this.handleSubmit = this.handleSubmit.bind(this)
+    this.updateKeyword = this.updateKeyword.bind(this)
+    this.onError = this.onError.bind(this)
+  }
+
+  handleTextChange(text) {
+    this.setState({
+      writingText: text,
+    })
+  }
+
+  updateKeyword() {
+    this.setState({
+      keywords: findHashTags(this.state.writingText),
+    })
+  }
+
+  handleSubmit(text) {
+
+  }
+
+  onError(errorMessages) {
+    this.setState({
+      errorMessages
     })
   }
 
   render() {
-    return (
-      <GoogleMaps.GoogleMap
-        defaultZoom={8}
-        center={{ lat: this.state.coords.latitude, lng: this.state.coords.longitude }}>
-
-        <MarkerWithLabel
-          position={{ lat: this.state.coords.latitude, lng: this.state.coords.longitude }}
-          labelAnchor={new window.google.maps.Point(0, 0)}
-          labelStyle={{backgroundColor: "rgba(255,255,0,0.3)", fontSize: "16px", padding: "16px", width: "150px"}}
-          onClick={this.props.onMarkerClick}>
-          <div> Where you are </div>
-        </MarkerWithLabel>
-      </GoogleMaps.GoogleMap>
-    )
-  }
-}
-
-MyMapComponent = compose(
-  withProps({
-    googleMapURL: `https://maps.googleapis.com/maps/api/js?v=3.exp&libraries=geometry,drawing,places?key=${API_KEY}`,
-    loadingElement: <div style={{ height: `100%` }} />,
-    containerElement: <div style={{ height: `400px` }} />,
-    mapElement: <div style={{ height: `100%` }} />,
-  }),
-  GoogleMaps.withScriptjs,
-  GoogleMaps.withGoogleMap
-)(MyMapComponent)
-
-class Dashboard extends React.Component {
-  state = { activeItem: 'dashboard' }
-
-  handleItemClick() {
-  }
-
-  render() {
-    const { activeItem } = this.state
+    const writingKeywords = !!this.state.writingText
+      ? findHashTags(this.state.writingText)
+      : this.defaultKeywords
     return (
       <div>
-        <UI.Menu>
-          <UI.Menu.Item name='Dashboard' active={activeItem === 'dashboard'} onClick={this.handleItemClick} />
-          <UI.Menu.Item name='New Post' active={activeItem === 'newPost'} onClick={this.handleItemClick} />
-          <UI.Menu.Item name='Find Friends' active={activeItem === 'findFriends'} onClick={this.handleItemClick} />
+        {/* Extract menu to component */}
+        <UI.Menu size="large">
+          <UI.Container>
+            <UI.Menu.Item header content="대시보드"/>
+            <UI.Menu.Menu position="right">
+              <UI.MenuItem>
+                <UI.Button primary> 이름: {this.props.me.email} </UI.Button>
+              </UI.MenuItem>
+            </UI.Menu.Menu>
+          </UI.Container>
         </UI.Menu>
-
-        <MyMapComponent/>
+        <UI.Container>
+          <UI.Form
+            error={!!this.state.errorMessages}>
+            <UI.Header as="h1">
+              {writingKeywords.map(e => `#${e}`).join(" ")}
+            </UI.Header>
+            <UI.Form.TextArea
+              onChange={e => this.handleTextChange(e.target.value)}
+              onKeyDown={e => (e.keyCode === 13 && (e.metaKey || e.ctrlKey))
+                ? this.handleSubmit(e.target.value)
+                : null}
+              onBlur={this.updateKeyword}
+              placeholder="#히덕 #희덕 해보세요"
+              autoHeight/>
+            <UI.Message
+              error
+              list={this.state.errorMessages}
+            />
+            <PostsMapContainer
+              keywords={this.state.keywords}
+              writingText={this.state.writingText.length > 0
+                ? this.state.writingText
+                : "#히덕 #희덕 해보세요"}
+              onError={this.onError}/>
+          </UI.Form>
+        </UI.Container>
       </div>
     )
   }
 }
+
+Dashboard = Redux.connect(mapStateToProps)(Dashboard)
+
 export default Dashboard

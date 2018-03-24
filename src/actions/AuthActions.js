@@ -3,6 +3,10 @@ import * as RouterRedux from 'react-router-redux'
 import AT from 'constants/ActionTypes'
 import AuthService from 'services/AuthService'
 
+/**
+ * Use redux-thunk when dispatching is required for processing promise.
+ */
+
 function createSignIn(payload) {
   return (dispatch) => {
     dispatch(createSetIsLoading(true))

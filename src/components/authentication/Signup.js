@@ -10,8 +10,8 @@ import './AuthForm.css'
 
 function mapStateToProps(state) {
   return {
-    isLoading: state.userReducer.isLoading,
-    errorMessages: state.userReducer.errorMessages,
+    isLoading: state.auth.isLoading,
+    errorMessages: state.auth.errorMessages,
   }
 }
 
@@ -76,11 +76,11 @@ class Signup extends React.Component {
                 <UI.Form.Input
                   label="Password"
                   onChange={this.getHandleChange('password')} placeholder="Password" type="password"
-                  iconPosition="left" icon="lock" />
+                  iconPosition="left" icon="lock" disabled />
                 <UI.Form.Input
                   label="Password Confirmation"
                   onChange={this.getHandleChange('passwordConrimation')} placeholder="Password Confirmation" type="password"
-                  iconPosition="left" icon="lock" />
+                  iconPosition="left" icon="lock" disabled />
               </UI.Form.Group>
             </UI.Segment>
             <UI.Segment>
@@ -93,7 +93,8 @@ class Signup extends React.Component {
             <UI.Message
               error
               list={errorMessages}
-            />          </UI.Form>
+            />
+          </UI.Form>
           <UI.Message>
               Do you have an account already? <br />
               <RouterDOM.Link to="/login"> Go to Login </RouterDOM.Link>

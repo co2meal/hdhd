@@ -8,11 +8,11 @@ import AuthActions from 'actions/AuthActions'
 
 import './AuthForm.css'
 
-function mapStateToProps(state) {
+function mapStateToProps(state) { // Replace it to thunk.
   return {
-    isLoading: state.user.isLoading,
-    redirectToReferrer: !!state.user.me,
-    errorMessages: state.user.errorMessages,
+    isLoading: state.auth.isLoading,
+    redirectToReferrer: !!state.auth.me,
+    errorMessages: state.auth.errorMessages,
   }
 }
 
@@ -69,7 +69,7 @@ class Login extends React.Component {
             </UI.Header.Subheader>
           </UI.Header>
           <UI.Form
-            size="large" autoComplete="new-password"
+            size="large"
             loading={isLoading}
             onSubmit={this.handleSubmit}
             error={!!errorMessages}>
@@ -79,7 +79,7 @@ class Login extends React.Component {
                 iconPosition="left" icon="user" />
               <UI.Form.Input
                 onChange={this.getHandleChange('password')} placeholder="password" type="password"
-                iconPosition="left" icon="lock" autoComplete="new-password" />
+                iconPosition="left" icon="lock" />
               <UI.Form.Button color="teal" size="large" fluid> Login </UI.Form.Button>
             </UI.Segment>
             <UI.Message

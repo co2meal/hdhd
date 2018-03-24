@@ -10,7 +10,7 @@ import './App.css';
 
 function mapStateToProps(state) {
   return {
-    isAuthenticated: !!state.user.me,
+    isAuthenticated: !!state.auth.me,
   }
 }
 

@@ -1,10 +1,10 @@
 import * as Redux from 'redux'
 import { routerReducer as router } from 'react-router-redux'
 
-import user from 'reducer/userReducer'
+import auth from 'reducer/authReducer'
 export default Redux.combineReducers(
   {
-    user,
+    auth,
     router,
   }
 )

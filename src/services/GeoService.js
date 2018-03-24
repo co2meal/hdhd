@@ -8,7 +8,10 @@ class GeoService {
   static getCurrentPosition() {
     return new Promise(function(resolve) {
       navigator.geolocation.getCurrentPosition(function(res) {
-        resolve(res.coords)
+        resolve({
+          longitude: res.coords.longitude,
+          latitude: res.coords.latitude,
+        })
       })
     })
   }
