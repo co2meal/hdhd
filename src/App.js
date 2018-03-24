@@ -2,7 +2,7 @@ import React from 'react';
 import * as Redux from 'react-redux'
 import * as RouterDOM from 'react-router-dom';
 
-import Login from 'components/authentication/Login'
+import SignIn from 'components/authentication/SignIn'
 import Signup from 'components/authentication/Signup'
 import ErrorPage404 from 'components/error/ErrorPage404'
 import Dashboard from 'components/dashboard/Dashboard'
@@ -27,7 +27,7 @@ class PrivateRoute extends React.Component {
           ) : (
             <RouterDOM.Redirect
               to={{
-                pathname: "/login",
+                pathname: "/signIn",
                 state: { from: props.location }
               }}
             />
@@ -44,7 +44,7 @@ class App extends React.Component {
     return (
       <RouterDOM.Switch>
         <RouterDOM.Redirect exact from='/' to='/dashboard' />
-        <RouterDOM.Route path='/login' component={Login} />
+        <RouterDOM.Route path='/signin' component={SignIn} />
         <RouterDOM.Route path='/signup' component={Signup} />
         <PrivateRoute path="/dashboard" component={Dashboard} />
         <RouterDOM.Route component={ErrorPage404} />

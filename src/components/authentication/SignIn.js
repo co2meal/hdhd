@@ -5,19 +5,20 @@ import * as RouterRedux from 'react-router-redux'
 import * as UI from 'semantic-ui-react'
 
 import AuthActions from 'actions/AuthActions'
+import AuthService from 'services/AuthService'
 
 import './AuthForm.css'
 
-function mapStateToProps(state) { // Replace it to thunk.
+function mapStateToProps(state) {
   return {
-    isLoading: state.auth.isLoading,
     redirectToReferrer: !!state.auth.me,
-    errorMessages: state.auth.errorMessages,
   }
 }
 
-class Login extends React.Component {
+class SignIn extends React.Component {
   state = {
+    isLoading: false,
+    errorMessages: null,
     form: {
       email: '',
       password: '',
@@ -32,15 +33,25 @@ class Login extends React.Component {
   }
 
   componentWillReceiveProps(nextProps) {
+    const { dispatch } = this.props
     if (nextProps.redirectToReferrer) {
       const { from } = nextProps.location.state || { from: { pathname: "/" } }
-      this.props.dispatch(RouterRedux.push(from))
+      dispatch(RouterRedux.push(from))
     }
   }
 
   handleSubmit(e) {
-    e.preventDefault()
-    this.props.dispatch(AuthActions.createSignIn(this.state.form))
+    const { form } = this.state
+    const { dispatch } = this.props
+
+    this.setState({ isLoading: true, errorMessages: null })
+    AuthService.signIn(form).then(user => {
+      dispatch(AuthActions.createSignInSuccess(user))
+    }).catch(messages => {
+      this.setState({ errorMessages: messages })
+    }).finally(() => {
+      this.setState({ isLoading: false })
+    })
   }
 
   getHandleChange(field) {
@@ -57,7 +68,7 @@ class Login extends React.Component {
   }
 
   render() {
-    const { isLoading, errorMessages } = this.props
+    const { isLoading, errorMessages } = this.state
 
     return (
       <UI.Grid textAlign="center" verticalAlign="middle">
@@ -80,7 +91,7 @@ class Login extends React.Component {
               <UI.Form.Input
                 onChange={this.getHandleChange('password')} placeholder="password" type="password"
                 iconPosition="left" icon="lock" />
-              <UI.Form.Button color="teal" size="large" fluid> Login </UI.Form.Button>
+              <UI.Form.Button color="teal" size="large" fluid> Log In </UI.Form.Button>
             </UI.Segment>
             <UI.Message
               error
@@ -96,6 +107,6 @@ class Login extends React.Component {
   }
 }
 
-Login = Redux.connect(mapStateToProps)(Login)
+SignIn = Redux.connect(mapStateToProps)(SignIn)
 
-export default Login
+export default SignIn

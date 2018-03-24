@@ -1,9 +1,10 @@
 import React from 'react';
 import * as Redux from 'react-redux'
 import * as RouterDOM from 'react-router-dom';
+import * as RouterRedux from 'react-router-redux'
 import * as UI from 'semantic-ui-react';
 
-import AuthActions from 'actions/AuthActions'
+import AuthService from 'services/AuthService'
 
 import './AuthForm.css'
 
@@ -17,6 +18,8 @@ function mapStateToProps(state) {
 
 class Signup extends React.Component {
   state = {
+    isLoading: false,
+    errorMessages: null,
     form: {
       email: '',
       password: '',
@@ -33,8 +36,17 @@ class Signup extends React.Component {
   }
 
   handleSubmit(e) {
-    e.preventDefault()
-    this.props.dispatch(AuthActions.createSignUp(this.state.form))
+    const { form } = this.state
+    const { dispatch } = this.props
+
+    this.setState({ isLoading: true, errorMessages: null })
+    AuthService.signUp(form).then(() => {
+      dispatch(RouterRedux.push('/welcome'))
+    }).catch(messages => {
+      this.setState({ errorMessages: messages })
+    }).finally(() => {
+      this.setState({ isLoading: false })
+    })
   }
 
   getHandleChange(field) {
@@ -51,7 +63,7 @@ class Signup extends React.Component {
   }
 
   render() {
-    const { isLoading, errorMessages } = this.props
+    const { isLoading, errorMessages } = this.state
 
     return (
       <UI.Grid textAlign="center" verticalAlign="middle">
@@ -97,7 +109,7 @@ class Signup extends React.Component {
           </UI.Form>
           <UI.Message>
               Do you have an account already? <br />
-              <RouterDOM.Link to="/login"> Go to Login </RouterDOM.Link>
+              <RouterDOM.Link to="/signin"> Go to Login </RouterDOM.Link>
               or <RouterDOM.Link to="/password"> Find your password </RouterDOM.Link>
           </UI.Message>
         </UI.GridColumn>

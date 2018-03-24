@@ -38,8 +38,8 @@ class Dashboard extends React.Component {
     })
   }
 
-  handleSubmit(text) {
-
+  handleSubmit(text) { // TODO: Complete Create
+    console.log(text)
   }
 
   onError(errorMessages) {
@@ -49,8 +49,11 @@ class Dashboard extends React.Component {
   }
 
   render() {
-    const writingKeywords = !!this.state.writingText
-      ? findHashTags(this.state.writingText)
+    const { writingText, errorMessages, keywords } = this.state
+    const { me } = this.props
+
+    const writingKeywords = !!writingText
+      ? findHashTags(writingText)
       : this.defaultKeywords
     return (
       <div>
@@ -60,14 +63,14 @@ class Dashboard extends React.Component {
             <UI.Menu.Item header content="대시보드"/>
             <UI.Menu.Menu position="right">
               <UI.MenuItem>
-                <UI.Button primary> 이름: {this.props.me.email} </UI.Button>
+                <UI.Button primary> 이름: {me.email} </UI.Button>
               </UI.MenuItem>
             </UI.Menu.Menu>
           </UI.Container>
         </UI.Menu>
         <UI.Container>
           <UI.Form
-            error={!!this.state.errorMessages}>
+            error={!!errorMessages}>
             <UI.Header as="h1">
               {writingKeywords.map(e => `#${e}`).join(" ")}
             </UI.Header>
@@ -81,12 +84,12 @@ class Dashboard extends React.Component {
               autoHeight/>
             <UI.Message
               error
-              list={this.state.errorMessages}
+              list={errorMessages}
             />
             <PostsMapContainer
-              keywords={this.state.keywords}
-              writingText={this.state.writingText.length > 0
-                ? this.state.writingText
+              keywords={keywords}
+              writingText={writingText.length > 0
+                ? writingText
                 : "#히덕 #희덕 해보세요"}
               onError={this.onError}/>
           </UI.Form>

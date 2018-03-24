@@ -2,8 +2,6 @@ import AT from 'constants/ActionTypes'
 
 const initialState = {
   me: null,
-  isLoading: false,
-  errorMessages: null,
 }
 
 export default function (state = initialState, action) {
@@ -12,30 +10,6 @@ export default function (state = initialState, action) {
       return {
         ...state,
         me: action.user,
-      }
-
-    case AT.SIGN_IN_FAILURE:
-      return {
-        ...state,
-        errorMessages: action.messages,
-      }
-
-    case AT.SIGN_UP_SUCCESS:
-      return {
-        ...state,
-        errorMessages: action.messages,
-      }
-
-    case AT.SIGN_UP_FAILURE:
-      return {
-        ...state,
-        errorMessages: action.messages,
-      }
-
-    case AT.SET_LOADING:
-      return {
-        ...state,
-        isLoading: action.isLoading
       }
 
     default:

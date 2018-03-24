@@ -30,7 +30,7 @@ class PostsMapContainer extends React.Component {
   }
 
   fetchPosts(keywords) {
-    this.props.onError(null)
+    this.props.onError(null) // TODO: defaultProp
     this.setState({
       isLoading: true,
     })
@@ -54,8 +54,9 @@ class PostsMapContainer extends React.Component {
   }
 
   componentDidMount() {
+    const { keywords } = this.props
     this.updateCoords()
-    this.fetchPosts(this.props.keywords)
+    this.fetchPosts(keywords)
   }
 
   componentWillReceiveProps(nextProps) {
@@ -65,21 +66,23 @@ class PostsMapContainer extends React.Component {
   }
 
   render() {
+    const { isLoading, coords, posts } = this.state
+    const { writingText } = this.props
     const writingPost = {
       _id: "writingPost",
-      content: this.props.writingText,
+      content: writingText,
       location: {
-        coordinates: [this.state.coords.longitude, this.state.coords.latitude],
+        coordinates: [coords.longitude, coords.latitude],
       }
     }
     return (
       <UI.Segment>
-        <UI.Dimmer active={this.state.isLoading}>
+        <UI.Dimmer active={isLoading}>
           <UI.Loader content="불러오는 중"/>
         </UI.Dimmer>
-        <GoogleMap coords={this.state.coords}>
+        <GoogleMap coords={coords}>
           <PostsMarkersContainer
-            posts={this.state.posts}
+            posts={posts}
             icon="https://cdn1.iconfinder.com/data/icons/business-13/6144/20-32.png"/>
           <PostsMarkersContainer posts={[writingPost]} />
         </GoogleMap>
@@ -90,7 +93,7 @@ class PostsMapContainer extends React.Component {
 
 class PostMarker extends React.Component {
   state = {
-    isClose: false,
+    isClosed: false,
   }
 
   constructor() {
@@ -100,18 +103,20 @@ class PostMarker extends React.Component {
 
   onToggle() {
     this.setState({
-      isClose: !this.state.isClose
+      isClosed: !this.state.isClosed
     })
   }
 
   render() {
+    const { isClosed } = this.state
+    const { post } = this.props
     return (
       <GoogleMaps.Marker
         {...this.props}
-        position={{lng: this.props.post.location.coordinates[0], lat: this.props.post.location.coordinates[1]}}
+        position={{lng: post.location.coordinates[0], lat: post.location.coordinates[1]}}
         onClick={this.onToggle}>
-        {this.state.isClose || <GoogleMaps.InfoWindow onCloseClick={this.onToggle} >
-          <ReactMarkdown source={this.props.post.content} />
+        {isClosed || <GoogleMaps.InfoWindow onCloseClick={this.onToggle} >
+          <ReactMarkdown source={post.content} />
         </GoogleMaps.InfoWindow>}
       </GoogleMaps.Marker>
     )
@@ -122,10 +127,8 @@ class PostsMarkersContainer extends React.Component {
   render() {
     return (
       <div>
-        {this.props.posts.map(p => (
-          <PostMarker
-            key={p._id}
-            post={p}/>
+        {this.props.posts.map(post => (
+          <PostMarker key={post._id} post={post}/>
         ))}
       </div>
     )
