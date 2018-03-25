@@ -48,9 +48,10 @@ class SignIn extends React.Component {
     AuthService.signIn(form).then(user => {
       dispatch(AuthActions.createSignInSuccess(user))
     }).catch(messages => {
-      this.setState({ errorMessages: messages })
-    }).finally(() => {
-      this.setState({ isLoading: false })
+      this.setState({
+        errorMessages: messages,
+        isLoading: false,
+      })
     })
   }
 
