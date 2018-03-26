@@ -20,9 +20,7 @@ class PostsMapContainer extends React.Component {
   }
 
   updateCoords() {
-    this.coordsPromise = GeoService.getCurrentPosition()
-
-    this.coordsPromise.then(coords => {
+    GeoService.getCurrentPosition().then(coords => {
       this.setState({
         coords: coords
       })
@@ -35,7 +33,7 @@ class PostsMapContainer extends React.Component {
       isLoading: true,
     })
 
-    this.coordsPromise.then((coords) => {
+    GeoService.getCurrentPosition().then((coords) => {
       return PostService.getPost({
         keyword: keywords,
         coordinates: coords,
@@ -128,7 +126,7 @@ class PostsMarkersContainer extends React.Component {
     return (
       <div>
         {this.props.posts.map(post => (
-          <PostMarker key={post._id} post={post}/>
+          <PostMarker {...this.props} key={post._id} post={post}/>
         ))}
       </div>
     )

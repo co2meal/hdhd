@@ -1,7 +1,7 @@
 import FetchService from './FetchService'
 
-const SIGN_IN_URL = "http://us-central1-hdhd-197707.cloudfunctions.net/signIn"
-const SIGN_UP_URL = "http://us-central1-hdhd-197707.cloudfunctions.net/signUp"
+const SIGN_IN_URL = "https://us-central1-hdhd-197707.cloudfunctions.net/signIn"
+const SIGN_UP_URL = "https://us-central1-hdhd-197707.cloudfunctions.net/signUp"
 
 class AuthService {
   static signIn({email, password}) {

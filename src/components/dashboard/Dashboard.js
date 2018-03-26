@@ -3,13 +3,16 @@ import findHashTags from "find-hashtags"
 import * as Redux from 'react-redux'
 import * as UI from 'semantic-ui-react'
 
+import PostService from 'services/PostService'
 import PostsMapContainer from './PostsMapContainer'
+import GeoService from 'services/GeoService'
 
 function mapStateToProps(state) {
   return {
     me: state.auth.me,
   }
 }
+
 class Dashboard extends React.Component {
   defaultKeywords = ["히덕", "희덕"]
   state = {
@@ -23,7 +26,7 @@ class Dashboard extends React.Component {
     this.handleTextChange = this.handleTextChange.bind(this)
     this.handleSubmit = this.handleSubmit.bind(this)
     this.updateKeyword = this.updateKeyword.bind(this)
-    this.onError = this.onError.bind(this)
+    this.setErrorMessages = this.setErrorMessages.bind(this)
   }
 
   handleTextChange(text) {
@@ -39,17 +42,34 @@ class Dashboard extends React.Component {
   }
 
   handleSubmit(text) { // TODO: Complete Create
-    console.log(text)
+    this.setState({
+      isLoading: true,
+      errorMessages: null,
+    })
+    GeoService.getCurrentPosition().then((coords) => {
+      return PostService.writePost({
+        content: this.state.writingText,
+        coordinates: coords,
+      })
+    }).catch((messages) => {
+      this.setState({
+        errorMessages: messages
+      })
+    }).finally(() => {
+      this.setState({
+        isLoading: false
+      })
+    })
   }
 
-  onError(errorMessages) {
+  setErrorMessages(errorMessages) {
     this.setState({
       errorMessages
     })
   }
 
   render() {
-    const { writingText, errorMessages, keywords } = this.state
+    const { writingText, errorMessages, keywords, isLoading } = this.state
     const { me } = this.props
 
     const writingKeywords = !!writingText
@@ -70,6 +90,7 @@ class Dashboard extends React.Component {
         </UI.Menu>
         <UI.Container>
           <UI.Form
+            loading={isLoading}
             error={!!errorMessages}>
             <UI.Header as="h1">
               {writingKeywords.map(e => `#${e}`).join(" ")}
@@ -81,18 +102,18 @@ class Dashboard extends React.Component {
                 : null}
               onBlur={this.updateKeyword}
               placeholder="#히덕 #희덕 해보세요"
+              error={!!errorMessages}
               autoHeight/>
             <UI.Message
               error
-              list={errorMessages}
-            />
-            <PostsMapContainer
+              list={errorMessages} />
+          </UI.Form>
+          <PostsMapContainer
               keywords={keywords}
               writingText={writingText.length > 0
                 ? writingText
                 : "#히덕 #희덕 해보세요"}
-              onError={this.onError}/>
-          </UI.Form>
+              onError={this.setErrorMessages}/>
         </UI.Container>
       </div>
     )
