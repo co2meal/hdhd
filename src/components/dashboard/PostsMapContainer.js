@@ -1,22 +1,25 @@
 import React from 'react'
 import ReactMarkdown from 'react-markdown'
 import _ from 'lodash'
-import * as GoogleMaps from "react-google-maps"
+import * as GoogleMaps from 'react-google-maps'
 import * as UI from 'semantic-ui-react'
 
 import GeoService from 'services/GeoService'
 import PostService from 'services/PostService'
 import GoogleMap from 'components/google-maps/GoogleMap'
 
-
 class PostsMapContainer extends React.Component {
-  state = {
-    coords: { // TODO: Put the last location that the device remembers.
-      latitude: -34.397,
-      longitude: 150.644,
-    },
-    posts: [],
-    isLoading: true,
+
+  constructor() {
+    super()
+    this.state = {
+      coords: { // TODO: Put the last location that the device remembers.
+        latitude: -34.397,
+        longitude: 150.644,
+      },
+      posts: [],
+      isLoading: true,
+    }
   }
 
   updateCoords() {
@@ -67,7 +70,7 @@ class PostsMapContainer extends React.Component {
     const { isLoading, coords, posts } = this.state
     const { writingText } = this.props
     const writingPost = {
-      _id: "writingPost",
+      _id: 'writingPost',
       content: writingText,
       location: {
         coordinates: [coords.longitude, coords.latitude],
@@ -90,12 +93,11 @@ class PostsMapContainer extends React.Component {
 }
 
 class PostMarker extends React.Component {
-  state = {
-    isClosed: false,
-  }
-
   constructor() {
     super()
+    this.state = {
+      isClosed: false,
+    }
     this.onToggle = this.onToggle.bind(this)
   }
 

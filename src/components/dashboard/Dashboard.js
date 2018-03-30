@@ -1,5 +1,5 @@
 import React from 'react'
-import findHashTags from "find-hashtags"
+import findHashTags from 'find-hashtags'
 import * as Redux from 'react-redux'
 import * as UI from 'semantic-ui-react'
 
@@ -14,15 +14,16 @@ function mapStateToProps(state) {
 }
 
 class Dashboard extends React.Component {
-  defaultKeywords = ["히덕", "희덕"]
-  state = {
-    keywords: this.defaultKeywords,
-    writingText: "",
-    errorMessages: null,
-  }
-
   constructor() {
     super()
+
+    this.defaultKeywords = ['히덕', '희덕']
+    this.state = {
+      keywords: this.defaultKeywords,
+      writingText: '',
+      errorMessages: null,
+    }
+
     this.handleTextChange = this.handleTextChange.bind(this)
     this.handleSubmit = this.handleSubmit.bind(this)
     this.updateKeyword = this.updateKeyword.bind(this)
@@ -41,7 +42,7 @@ class Dashboard extends React.Component {
     })
   }
 
-  handleSubmit(text) { // TODO: Complete Create
+  handleSubmit() { // TODO: Complete Create
     this.setState({
       isLoading: true,
       errorMessages: null,
@@ -72,7 +73,7 @@ class Dashboard extends React.Component {
     const { writingText, errorMessages, keywords, isLoading } = this.state
     const { me } = this.props
 
-    const writingKeywords = !!writingText
+    const writingKeywords = writingText
       ? findHashTags(writingText)
       : this.defaultKeywords
     return (
@@ -93,7 +94,7 @@ class Dashboard extends React.Component {
             loading={isLoading}
             error={!!errorMessages}>
             <UI.Header as="h1">
-              {writingKeywords.map(e => `#${e}`).join(" ")}
+              {writingKeywords.map(e => `#${e}`).join(' ')}
             </UI.Header>
             <UI.Form.TextArea
               onChange={e => this.handleTextChange(e.target.value)}
@@ -109,11 +110,11 @@ class Dashboard extends React.Component {
               list={errorMessages} />
           </UI.Form>
           <PostsMapContainer
-              keywords={keywords}
-              writingText={writingText.length > 0
-                ? writingText
-                : "#히덕 #희덕 해보세요"}
-              onError={this.setErrorMessages}/>
+            keywords={keywords}
+            writingText={writingText.length > 0
+              ? writingText
+              : '#히덕 #희덕 해보세요'}
+            onError={this.setErrorMessages}/>
         </UI.Container>
       </div>
     )

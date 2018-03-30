@@ -1,6 +1,7 @@
+/* eslint-disable-next-line */
 import React from 'react'
 import ReactDOM from 'react-dom'
-import Thunk from 'redux-thunk';
+import Thunk from 'redux-thunk'
 
 import * as Redux from 'redux'
 import * as ReactRedux from 'react-redux'
@@ -11,9 +12,9 @@ import createHistory from 'history/createBrowserHistory'
 import registerServiceWorker from './registerServiceWorker'
 import reducer from './reducer'
 
-import App from './App';
+import App from './App'
 
-import './index.css';
+import './index.css'
 const history = createHistory()
 
 const composeEnhancers = window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__ || Redux.compose
@@ -34,13 +35,13 @@ ReactDOM.render(
     </HotLoader.AppContainer>
   </ReactRedux.Provider>,
   document.getElementById('root')
-);
+)
 
-registerServiceWorker();
+registerServiceWorker()
 
 if (module.hot) {
   module.hot.accept('./App', () => {
-    const NextApp = require('./App').default;
+    const NextApp = require('./App').default
     ReactDOM.render(
       <ReactRedux.Provider store={store}>
         <HotLoader.AppContainer>
@@ -50,6 +51,6 @@ if (module.hot) {
         </HotLoader.AppContainer>
       </ReactRedux.Provider>,
       document.getElementById('root')
-    );
-  });
+    )
+  })
 }

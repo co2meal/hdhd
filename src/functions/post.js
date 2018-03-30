@@ -3,12 +3,12 @@ const findHashtags = require('find-hashtags')
 exports.writePost = (req, res, db) => {
   const keywords = findHashtags(req.body.content)
   if (keywords.length === 0) {
-    return res.status(500).send({messages: ["Message should have hashtags"]})
+    return res.status(500).send({messages: ['Message should have hashtags']})
   }
   const post = {
     keyword: keywords,
     location: {
-      type: "Point",
+      type: 'Point',
       coordinates: [req.body.coordinates.longitude, req.body.coordinates.latitude],
     },
     content: req.body.content
@@ -32,7 +32,7 @@ exports.getPost = (req, res, db) => {
     keyword: { $all: req.body.keyword },
     location: { $near: {
       $geometry: {
-        type: "Point",
+        type: 'Point',
         coordinates: [ req.body.coordinates.longitude , req.body.coordinates.latitude ]
       },
       $maxDistance: 5000, // within 5 km

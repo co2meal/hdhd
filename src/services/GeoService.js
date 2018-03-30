@@ -4,8 +4,7 @@
  * choose another source like google map geolocation api
  */
 
- let promise
-
+let promise
 class GeoService {
   static getCurrentPosition() {
     if (promise === undefined) {

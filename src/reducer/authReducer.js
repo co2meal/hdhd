@@ -6,14 +6,14 @@ const initialState = {
 
 export default function (state = initialState, action) {
   switch (action.type) {
-    case AT.SIGN_IN_SUCCESS:
-      return {
-        ...state,
-        me: action.user,
-      }
+  case AT.SIGN_IN_SUCCESS:
+    return {
+      ...state,
+      me: action.user,
+    }
 
-    default:
-      return state
+  default:
+    return state
   }
 }
 

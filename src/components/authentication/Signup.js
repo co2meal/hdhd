@@ -1,13 +1,12 @@
-import React from 'react';
+import React from 'react'
 import * as Redux from 'react-redux'
-import * as RouterDOM from 'react-router-dom';
+import * as RouterDOM from 'react-router-dom'
 import * as RouterRedux from 'react-router-redux'
-import * as UI from 'semantic-ui-react';
+import * as UI from 'semantic-ui-react'
 
 import AuthService from 'services/AuthService'
 
 import './AuthForm.css'
-
 
 function mapStateToProps(state) {
   return {
@@ -17,25 +16,26 @@ function mapStateToProps(state) {
 }
 
 class Signup extends React.Component {
-  state = {
-    isLoading: false,
-    errorMessages: null,
-    form: {
-      email: '',
-      password: '',
-      passwordConrimation: '',
-      username: '',
-    },
-  }
-
   constructor(props) {
     super(props)
+    this.state = {
+      isLoading: false,
+      errorMessages: null,
+      form: {
+        email: '',
+        password: '',
+        passwordConrimation: '',
+        username: '',
+      },
+    }
 
     this.handleSubmit = this.handleSubmit.bind(this)
     this.getHandleChange = this.getHandleChange.bind(this)
   }
 
   handleSubmit(e) {
+    e.preventDefault()
+
     const { form } = this.state
     const { dispatch } = this.props
 
@@ -97,9 +97,9 @@ class Signup extends React.Component {
             </UI.Segment>
             <UI.Segment>
               <UI.Form.Input
-                  label="Username"
-                  onChange={this.getHandleChange('username')} placeholder="Username" type="text"
-                  iconPosition="left" icon="user" />
+                label="Username"
+                onChange={this.getHandleChange('username')} placeholder="Username" type="text"
+                iconPosition="left" icon="user" />
               <UI.Form.Button color="teal" size="large" fluid> Register </UI.Form.Button>
             </UI.Segment>
             <UI.Message
@@ -108,9 +108,9 @@ class Signup extends React.Component {
             />
           </UI.Form>
           <UI.Message>
-              Do you have an account already? <br />
-              <RouterDOM.Link to="/signin"> Go to Login </RouterDOM.Link>
-              or <RouterDOM.Link to="/password"> Find your password </RouterDOM.Link>
+            Do you have an account already? <br />
+            <RouterDOM.Link to="/signin"> Go to Login </RouterDOM.Link>
+            or <RouterDOM.Link to="/password"> Find your password </RouterDOM.Link>
           </UI.Message>
         </UI.GridColumn>
       </UI.Grid>
@@ -120,4 +120,4 @@ class Signup extends React.Component {
 
 Signup = Redux.connect(mapStateToProps)(Signup)
 
-export default Signup;
+export default Signup

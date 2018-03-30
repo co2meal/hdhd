@@ -3,7 +3,7 @@ exports.signIn = (req, res, db) => {
     email: req.body.email
   }
   db.collection('users').findOne(query).then((user) => {
-    if (!user) throw new Error("user not found")
+    if (!user) throw new Error('user not found')
     return user
   }).then((user) => {
     return res.status(200).send(user)
@@ -17,12 +17,12 @@ exports.signUp = (req, res, db) => {
     email: req.body.email
   }
   db.collection('users').findOne(query).then((user) => {
-    if (user) throw new Error("user already exist")
+    if (user) throw new Error('user already exist')
     return db.collection('users').insert(req.body)
   }).then(user => {
     return res.status(200).send(user)
   }).catch(e => {
-    console.log(e)
+    global.console.error(e)
     return res.status(500).send({messages: [e.message]})
   })
 }

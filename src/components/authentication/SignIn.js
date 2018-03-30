@@ -35,12 +35,12 @@ class SignIn extends React.Component {
   componentWillReceiveProps(nextProps) {
     const { dispatch } = this.props
     if (nextProps.redirectToReferrer) {
-      const { from } = nextProps.location.state || { from: { pathname: "/" } }
+      const { from } = nextProps.location.state || { from: { pathname: '/' } }
       dispatch(RouterRedux.push(from))
     }
   }
 
-  handleSubmit(e) {
+  handleSubmit() {
     const { form } = this.state
     const { dispatch } = this.props
 

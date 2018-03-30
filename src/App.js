@@ -1,12 +1,12 @@
-import React from 'react';
+import React from 'react'
 import * as Redux from 'react-redux'
-import * as RouterDOM from 'react-router-dom';
+import * as RouterDOM from 'react-router-dom'
 
 import SignIn from 'components/authentication/SignIn'
 import Signup from 'components/authentication/Signup'
 import ErrorPage404 from 'components/error/ErrorPage404'
 import Dashboard from 'components/dashboard/Dashboard'
-import './App.css';
+import './App.css'
 
 function mapStateToProps(state) {
   return {
@@ -27,7 +27,7 @@ class PrivateRoute extends React.Component {
           ) : (
             <RouterDOM.Redirect
               to={{
-                pathname: "/signIn",
+                pathname: '/signIn',
                 state: { from: props.location }
               }}
             />
@@ -37,6 +37,7 @@ class PrivateRoute extends React.Component {
     )
   }
 }
+
 PrivateRoute = Redux.connect(mapStateToProps)(PrivateRoute)
 
 class App extends React.Component {
@@ -46,7 +47,7 @@ class App extends React.Component {
         <RouterDOM.Redirect exact from='/' to='/dashboard' />
         <RouterDOM.Route path='/signin' component={SignIn} />
         <RouterDOM.Route path='/signup' component={Signup} />
-        <PrivateRoute path="/dashboard" component={Dashboard} />
+        <PrivateRoute path='/dashboard' component={Dashboard} />
         <RouterDOM.Route component={ErrorPage404} />
       </RouterDOM.Switch>
     )

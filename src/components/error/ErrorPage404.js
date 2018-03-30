@@ -1,6 +1,4 @@
-import React from 'react';
-import * as RouterDOM from 'react-router-dom';
-import { Button } from 'semantic-ui-react';
+import React from 'react'
 
 class ErrorPage404 extends React.Component {
   render() {
@@ -14,7 +12,7 @@ class ErrorPage404 extends React.Component {
           </RouterDOM.Link>
         </p>
       </div>
-    );
+    )
   }
 }
 

@@ -1,7 +1,7 @@
 import FetchService from './FetchService'
 
-const GET_POST_URL = "https://us-central1-hdhd-197707.cloudfunctions.net/getPost"
-const WRITE_POST_URL = "https://us-central1-hdhd-197707.cloudfunctions.net/writePost"
+const GET_POST_URL = 'https://us-central1-hdhd-197707.cloudfunctions.net/getPost'
+const WRITE_POST_URL = 'https://us-central1-hdhd-197707.cloudfunctions.net/writePost'
 
 class PostService {
   static getPost({keyword, coordinates}) {
