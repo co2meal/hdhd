@@ -44,7 +44,7 @@ class Signup extends React.Component {
       dispatch(RouterRedux.push('/welcome'))
     }).catch(messages => {
       this.setState({ errorMessages: messages })
-    }).finally(() => {
+    }).then(() => {
       this.setState({ isLoading: false })
     })
   }

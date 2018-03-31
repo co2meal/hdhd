@@ -56,7 +56,7 @@ class Dashboard extends React.Component {
       this.setState({
         errorMessages: messages
       })
-    }).finally(() => {
+    }).then(() => {
       this.setState({
         isLoading: false
       })

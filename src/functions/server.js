@@ -11,5 +11,5 @@ for (const k of Object.keys(backend)) {
 }
 
 app.listen(3001, function() {
-  window.console.log('Listening...')
+  global.console.log('Listening...')
 })

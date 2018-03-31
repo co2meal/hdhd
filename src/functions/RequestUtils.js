@@ -1,4 +1,9 @@
-var whitelist = ['http://localhost:3000', 'https://hdhd.netlify.com']
+var whitelist = [
+  'http://localhost:3000',
+  'http://192.168.0.26:3000',
+  'http://hdhd.netlify.com',
+  'https://hdhd.netlify.com',
+]
 const cors = require('cors')({
   credentials: true,
   origin: function (origin, callback) {

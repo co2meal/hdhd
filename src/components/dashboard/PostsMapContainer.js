@@ -47,7 +47,7 @@ class PostsMapContainer extends React.Component {
       })
     }).catch(errorMessages => {
       this.props.onError(errorMessages)
-    }).finally(() => {
+    }).then(() => {
       this.setState({
         isLoading: false,
       })
