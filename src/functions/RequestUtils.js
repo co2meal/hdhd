@@ -12,7 +12,7 @@ const cors = require('cors')({
     } else {
       callback(new Error({messages: 'Not allowed by CORS'}))
     }
-  }
+  },
 })
 
 exports.cors = cors

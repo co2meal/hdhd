@@ -7,7 +7,7 @@ import * as Redux from 'redux'
 import * as ReactRedux from 'react-redux'
 import * as HotLoader from 'react-hot-loader'
 import * as RouterRedux from 'react-router-redux'
-import createHistory from 'history/createBrowserHistory'
+import createHistory from 'history/createHashHistory'
 
 import registerServiceWorker from './registerServiceWorker'
 import reducer from './reducer'

@@ -1,6 +1,6 @@
 exports.signIn = (req, res, db) => {
   const query = {
-    email: req.body.email
+    email: req.body.email,
   }
   db.collection('users').findOne(query).then((user) => {
     if (!user) throw new Error('user not found')
@@ -14,7 +14,7 @@ exports.signIn = (req, res, db) => {
 
 exports.signUp = (req, res, db) => {
   const query = {
-    email: req.body.email
+    email: req.body.email,
   }
   db.collection('users').findOne(query).then((user) => {
     if (user) throw new Error('user already exist')

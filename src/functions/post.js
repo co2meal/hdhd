@@ -11,7 +11,7 @@ exports.writePost = (req, res, db) => {
       type: 'Point',
       coordinates: [req.body.coordinates.longitude, req.body.coordinates.latitude],
     },
-    content: req.body.content
+    content: req.body.content,
   }
 
   db.collection('posts').insertOne(post).then(output => {
@@ -21,8 +21,6 @@ exports.writePost = (req, res, db) => {
   })
 }
 
-// TODO: find better way to handle errors
-// Cand. 1: wrap it in backend.js
 exports.getPost = (req, res, db) => {
   if (req.body.keyword.length === 0) {
     return res.status(200).send([])
@@ -33,10 +31,10 @@ exports.getPost = (req, res, db) => {
     location: { $near: {
       $geometry: {
         type: 'Point',
-        coordinates: [ req.body.coordinates.longitude , req.body.coordinates.latitude ]
+        coordinates: [ req.body.coordinates.longitude , req.body.coordinates.latitude ],
       },
-      $maxDistance: 5000, // within 5 km
-    }}
+      // $maxDistance: 5000, // within 5 km
+    }},
   }
 
   db.collection('posts').find(query).toArray().then(posts => {

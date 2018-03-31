@@ -11,7 +11,7 @@ for (const key of Object.keys(exports)) {
     DatabaseUtils.connectMongoDB().then(db => {
       oldFn(req, res, db)
     }).catch(err => {
-      window.console.error(err)
+      global.console.error(err)
     })
   })
 }

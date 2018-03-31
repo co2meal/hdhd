@@ -9,7 +9,7 @@ class PostService {
       body: JSON.stringify({
         keyword,
         coordinates,
-      })
+      }),
     })
   }
   static writePost({coordinates, content}) {
@@ -17,7 +17,7 @@ class PostService {
       body: JSON.stringify({
         coordinates,
         content,
-      })
+      }),
     })
   }
 }

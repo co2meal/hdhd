@@ -43,8 +43,24 @@ module.exports = {
         "react/jsx-uses-vars": [
             "error",
         ],
-        "no-class-assign": [
-            0
+        "no-class-assign": [ // Too useful
+            "off"
+        ],
+        "no-unused-vars": [
+            "warn"
+        ],
+        "no-console": [
+            "warn",
+        ],
+        "comma-dangle": [
+            "warn",
+            "always-multiline"
+        ],
+        "eol-last": [
+            "error",
         ]
+    },
+    "globals": {
+        "google": false,
     }
 };

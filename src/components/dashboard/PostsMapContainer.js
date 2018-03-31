@@ -25,7 +25,7 @@ class PostsMapContainer extends React.Component {
   updateCoords() {
     GeoService.getCurrentPosition().then(coords => {
       this.setState({
-        coords: coords
+        coords: coords,
       })
     })
   }
@@ -74,7 +74,7 @@ class PostsMapContainer extends React.Component {
       content: writingText,
       location: {
         coordinates: [coords.longitude, coords.latitude],
-      }
+      },
     }
     return (
       <UI.Segment>
@@ -103,7 +103,7 @@ class PostMarker extends React.Component {
 
   onToggle() {
     this.setState({
-      isClosed: !this.state.isClosed
+      isClosed: !this.state.isClosed,
     })
   }
 

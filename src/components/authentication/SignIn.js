@@ -63,7 +63,7 @@ class SignIn extends React.Component {
         form: {
           ...this.state.form,
           [field]: e.target.value,
-        }
+        },
       })
     }
   }

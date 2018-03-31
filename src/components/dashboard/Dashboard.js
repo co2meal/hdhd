@@ -54,18 +54,18 @@ class Dashboard extends React.Component {
       })
     }).catch((messages) => {
       this.setState({
-        errorMessages: messages
+        errorMessages: messages,
       })
     }).then(() => {
       this.setState({
-        isLoading: false
+        isLoading: false,
       })
     })
   }
 
   setErrorMessages(errorMessages) {
     this.setState({
-      errorMessages
+      errorMessages,
     })
   }
 
@@ -96,7 +96,7 @@ class Dashboard extends React.Component {
             <UI.Header as="h1">
               {writingKeywords.map(e => `#${e}`).join(' ')}
             </UI.Header>
-            <UI.Form.TextArea
+            <UI.Form.TextArea // TODO: Change to query box.
               onChange={e => this.handleTextChange(e.target.value)}
               onKeyDown={e => (e.keyCode === 13 && (e.metaKey || e.ctrlKey))
                 ? this.handleSubmit(e.target.value)

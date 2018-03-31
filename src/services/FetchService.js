@@ -3,9 +3,9 @@ class FetchService { // TODO: Accept path instead of url
     options = {
       method: 'POST',
       headers: {
-        'Content-Type': 'application/json'
+        'Content-Type': 'application/json',
       },
-      ...options
+      ...options,
     }
 
     return fetch(url, options).then(res => {
